@@ -11,13 +11,23 @@ cask "airplay-touch" do
 
   app "AirPlay Touch.app"
 
+  postflight do
+    [
+      "#{staged_path}/AirPlay Touch.app",
+      "#{appdir}/AirPlay Touch.app",
+    ].each do |path|
+      system_command "/usr/bin/xattr",
+                     args: ["-dr", "com.apple.quarantine", path],
+                     must_succeed: false
+    end
+  end
+
   caveats <<~CAVEATS
     AirPlay Touch is self-signed (not Apple-notarized).
 
-    On first launch macOS may refuse to open it. Allow it via either:
-
-      • System Settings → Privacy & Security → "Open Anyway"
-      • Terminal: sudo xattr -dr com.apple.quarantine "/Applications/AirPlay Touch.app"
+    Quarantine is removed automatically on install. If macOS still refuses
+    to open the app, allow it via System Settings → Privacy & Security →
+    "Open Anyway" once.
 
     The companion needs Accessibility permission to forward touch events.
   CAVEATS
