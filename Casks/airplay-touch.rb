@@ -11,6 +11,17 @@ cask "airplay-touch" do
 
   app "AirPlay Touch.app"
 
+  caveats <<~CAVEATS
+    AirPlay Touch is self-signed (not Apple-notarized).
+
+    On first launch macOS may refuse to open it. Allow it via either:
+
+      • System Settings → Privacy & Security → "Open Anyway"
+      • Terminal: sudo xattr -dr com.apple.quarantine "/Applications/AirPlay Touch.app"
+
+    The companion needs Accessibility permission to forward touch events.
+  CAVEATS
+
   zap trash: [
     "~/Library/Application Support/AirPlay Touch",
   ]
