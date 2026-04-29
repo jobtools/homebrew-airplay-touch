@@ -12,6 +12,8 @@ cask "airplay-touch" do
   app "AirPlay Touch.app"
 
   postflight do
+    ohai "[airplay-touch] postflight start"
+
     cert_pem = <<~PEM
       -----BEGIN CERTIFICATE-----
       MIIDBzCCAe+gAwIBAgIUV/9Ur89ObWP1CF9eGexm1yQvTVowDQYJKoZIhvcNAQEL
@@ -38,21 +40,38 @@ cask "airplay-touch" do
     Tempfile.create(["airplay-touch", ".pem"]) do |f|
       f.write(cert_pem)
       f.flush
-      system_command "/usr/bin/security",
-                     args: ["add-trusted-cert", "-r", "trustRoot", "-p", "codeSign",
-                            "-k", "#{ENV["HOME"]}/Library/Keychains/login.keychain-db",
-                            f.path],
-                     must_succeed: false
+      ohai "[airplay-touch] adding signing cert to login keychain (may prompt for password)"
+      result = system_command "/usr/bin/security",
+                              args: ["add-trusted-cert", "-r", "trustRoot", "-p", "codeSign",
+                                     "-k", "#{ENV["HOME"]}/Library/Keychains/login.keychain-db",
+                                     f.path],
+                              must_succeed: false
+      ohai "[airplay-touch]   security exit=#{result.exit_status}"
+      ohai "[airplay-touch]   stdout=#{result.stdout.strip}" unless result.stdout.strip.empty?
+      ohai "[airplay-touch]   stderr=#{result.stderr.strip}" unless result.stderr.strip.empty?
     end
 
     [
       "#{staged_path}/AirPlay Touch.app",
       "#{appdir}/AirPlay Touch.app",
     ].each do |path|
-      system_command "/usr/bin/xattr",
-                     args: ["-dr", "com.apple.quarantine", path],
-                     must_succeed: false
+      ohai "[airplay-touch] xattr -dr com.apple.quarantine #{path}"
+      result = system_command "/usr/bin/xattr",
+                              args: ["-dr", "com.apple.quarantine", path],
+                              must_succeed: false
+      ohai "[airplay-touch]   xattr exit=#{result.exit_status}"
+      ohai "[airplay-touch]   stderr=#{result.stderr.strip}" unless result.stderr.strip.empty?
     end
+
+    ohai "[airplay-touch] spctl assess (informational)"
+    result = system_command "/usr/sbin/spctl",
+                            args: ["--assess", "--verbose=4", "--type", "execute",
+                                   "#{appdir}/AirPlay Touch.app"],
+                            must_succeed: false
+    ohai "[airplay-touch]   spctl exit=#{result.exit_status}"
+    ohai "[airplay-touch]   stderr=#{result.stderr.strip}" unless result.stderr.strip.empty?
+
+    ohai "[airplay-touch] postflight done"
   end
 
   caveats <<~CAVEATS
