@@ -82,6 +82,8 @@ cask "airplay-touch" do
     The companion needs Accessibility permission to forward touch events.
   CAVEATS
 
+  uninstall quit: "com.airplaytouch.companion"
+
   zap trash: [
     "~/Library/Application Support/AirPlay Touch",
   ]
