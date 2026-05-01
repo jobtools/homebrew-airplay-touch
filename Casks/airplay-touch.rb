@@ -1,6 +1,6 @@
 cask "airplay-touch" do
-  version "1.8"
-  sha256 "4c470c0d3d43dc1d033461aaef81c23db7bacbc8cf38bb070217c2b096a220e7"
+  version "1.9"
+  sha256 "8d824ca51b3138dfa12b86411cd85dae081184736de7c6b0d41bd5d1d9a39270"
 
   url "https://github.com/jobtools/airplay-android/releases/download/mac-v#{version}/AirPlay-Touch-mac-v#{version}.zip"
   name "AirPlay Touch"
