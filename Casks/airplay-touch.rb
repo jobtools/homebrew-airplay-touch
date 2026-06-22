@@ -7,7 +7,7 @@ cask "airplay-touch" do
   desc "AirPlay receiver companion that pairs with the Android app"
   homepage "https://github.com/jobtools/homebrew-tap"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "AirPlay Touch.app"
 
