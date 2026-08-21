@@ -1,6 +1,6 @@
 cask "airplay-touch" do
-  version "1.3.17"
-  sha256 "9ca27a2d6ddf4e614cf2727f9ebedf2dfd30a080b7a8c35529566bbd5c37f36c"
+  version "1.5.20"
+  sha256 "3881b37aeb38c6484e82b76bef76590fd6712b96ab7e1d318d7db3f9dec08a52"
 
   url "https://github.com/jobtools/homebrew-tap/releases/download/airplay-touch-v#{version}/AirPlay-Touch-#{version}.zip"
   name "AirPlay Touch"
@@ -13,25 +13,7 @@ cask "airplay-touch" do
 
   uninstall quit: "com.airplaytouch.companion"
 
-  postflight do
-    # Strip the quarantine attribute so Sequoia does not refuse first launch.
-    [
-      "#{staged_path}/AirPlay Touch.app",
-      "#{appdir}/AirPlay Touch.app",
-    ].each do |path|
-      system_command "/usr/bin/xattr",
-                     args: ["-dr", "com.apple.quarantine", path],
-                     must_succeed: false
-    end
-  end
-
   caveats <<~CAVEATS
-    AirPlay Touch is self-signed (not Apple-notarized).
-
-    Quarantine is removed automatically on install. If macOS still refuses
-    to open the app, allow it via System Settings → Privacy & Security →
-    "Open Anyway" once.
-
     The companion needs Accessibility permission to forward touch events.
   CAVEATS
 
