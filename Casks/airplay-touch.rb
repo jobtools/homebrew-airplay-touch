@@ -1,15 +1,15 @@
 cask "airplay-touch" do
-  version "1.5.24"
-  sha256 "20f7d117384287b0208d041b7bf58fcc85f6ec8acb708fd3b2a0465d5030a775"
+  version "1.6.11"
+  sha256 "b1d112fe6166dedb3a33d1e7476f469229110f8a86c5e4c2a3f7731dcd18ec82"
 
-  url "https://github.com/jobtools/homebrew-tap/releases/download/airplay-touch-v#{version}/AirPlay-Touch-#{version}.dmg"
-  name "AirPlay Touch"
-  desc "AirPlay receiver companion that pairs with the Android app"
-  homepage "https://apps.sskplay.com/airplay-touch/"
+  url "https://github.com/jobtools/homebrew-tap/releases/download/airpair-touch-v#{version}/AirPair-Touch-#{version}.dmg"
+  name "AirPair Touch"
+  desc "Screen mirroring receiver companion that pairs with the Android app"
+  homepage "https://apps.sskplay.com/airpair-touch/"
 
   depends_on macos: :sequoia
 
-  app "AirPlay Touch.app"
+  app "AirPair Touch.app"
 
   uninstall quit: "com.airplaytouch.companion"
 
@@ -18,6 +18,7 @@ cask "airplay-touch" do
   CAVEATS
 
   zap trash: [
+    "~/Library/Application Support/AirPair Touch",
     "~/Library/Application Support/AirPlay Touch",
   ]
 end
